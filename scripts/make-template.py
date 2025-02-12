@@ -67,7 +67,7 @@ def replace_begin(lines: list[str]) -> list[str]:
 
     if need_import:
         new_lines.insert(
-            2, "import yali.edu.secenary.compiler.NotImplementedException;\n")
+            2, "import cn.edu.yali.compiler.NotImplementedException;\n")
 
     return new_lines
 
