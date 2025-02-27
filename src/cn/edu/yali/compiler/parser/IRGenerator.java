@@ -17,7 +17,7 @@ import java.util.Stack;
 import static cn.edu.yali.compiler.lexer.Token.normal;
 import static java.lang.Character.isDigit;
 
-// TODO: 实验三: 实现 IR 生成
+// Experiment 3: Implement IR generation
 
 /**
  *
@@ -32,7 +32,6 @@ public class IRGenerator implements ActionObserver {
 
     @Override
     public void whenShift(Status currentStatus, Token currentToken) {
-        // TODO
         ir_stack.push(currentToken);
     }
 
@@ -43,8 +42,6 @@ public class IRGenerator implements ActionObserver {
 
     @Override
     public void whenReduce(Status currentStatus, Production production) {
-        // TODO
-
         if (production.head().toString().equals("S")) {
             if (production.body().getFirst().toString().equals("return"))
                 ir_list.add(Instruction.createRet(IRVariable.named(ir_stack.peek().getText())));
@@ -200,18 +197,15 @@ public class IRGenerator implements ActionObserver {
 
     @Override
     public void whenAccept(Status currentStatus) {
-        // TODO
         ir_stack.clear();
     }
 
     @Override
     public void setSymbolTable(SymbolTable table) {
-        // TODO
         externSymbolTable = table;
     }
 
     public List<Instruction> getIR() {
-        // TODO
         return ir_list;
     }
 

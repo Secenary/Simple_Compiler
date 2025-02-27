@@ -1,9 +1,9 @@
 package cn.edu.yali.compiler.symtab;
 
 /**
- * 源语言中的变量的类型
+ * The type of the variable in the source language
  */
 public enum SourceCodeType {
-    // 我们的源语言中只有 int 变量, 对应到 RISC-V 中的 32 位有符号整数类型.
+    // There are only int variables in our source language, which correspond to the 32-bit signed integer type in RISC-V.
     Int
 }

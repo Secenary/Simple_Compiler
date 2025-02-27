@@ -1,7 +1,7 @@
 package cn.edu.yali.compiler.parser.table;
 
 /**
- * 表示文法符号中的非终结符, 你不应该修改此文件
+ * Represents a non-terminal symbol in a grammar symbol
  */
 public class NonTerminal extends Term {
     public NonTerminal(String id) {

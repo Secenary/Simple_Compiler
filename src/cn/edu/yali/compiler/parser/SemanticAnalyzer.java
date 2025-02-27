@@ -10,7 +10,7 @@ import cn.edu.yali.compiler.symtab.SymbolTableEntry;
 
 import java.util.Stack;
 
-// TODO: 实验三: 实现语义分析
+// Experiment 3: Implement semantic analysis
 public class SemanticAnalyzer implements ActionObserver {
 
     private SymbolTable tmp_table;
@@ -19,7 +19,7 @@ public class SemanticAnalyzer implements ActionObserver {
 
     @Override
     public void whenAccept(Status currentStatus) {
-        // TODO: 该过程在遇到 Accept 时要采取的代码动作
+        // The code actions to be taken when the process encounters Accept
         semantic_stack_1.clear();
         semantic_stack_2.clear();
         tmp_table = null;
@@ -27,7 +27,7 @@ public class SemanticAnalyzer implements ActionObserver {
 
     @Override
     public void whenReduce(Status currentStatus, Production production) {
-        // TODO: 该过程在遇到 reduce production 时要采取的代码动作
+        // The code actions to be taken when the process encounters reduce production
 
         if (production.body().getFirst().toString().equals("int")) {
             semantic_stack_2.push(SourceCodeType.Int); //RISC-V 32bit only has "Int" = =
@@ -44,14 +44,14 @@ public class SemanticAnalyzer implements ActionObserver {
 
     @Override
     public void whenShift(Status currentStatus, Token currentToken) {
-        // TODO: 该过程在遇到 shift 时要采取的代码动作
+        // The code actions to be taken when the process encounters a shift
         semantic_stack_1.push(currentToken);
     }
 
     @Override
     public void setSymbolTable(SymbolTable table) {
-        // TODO: 设计你可能需要的符号表存储结构
-        // 如果需要使用符号表的话, 可以将它或者它的一部分信息存起来, 比如使用一个成员变量存储
+        // Design the symbol table storage structure you may need
+        // If you need to use a symbol table, you can store it or part of its information, such as using a member variable to store
         tmp_table = table;
     }
 }

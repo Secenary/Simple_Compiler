@@ -3,14 +3,11 @@ package cn.edu.yali.compiler.parser.table;
 import cn.edu.yali.compiler.lexer.TokenKind;
 import cn.edu.yali.compiler.utils.FilePathConfig;
 import cn.edu.yali.compiler.utils.FileUtils;
-
 import java.util.*;
 
 /**
- * 读取语法文件 (grammar.txt), 获得产生式的原始字符串和非终结符
- * <br>
- * 你不应该修改此文件
- */
+ * Read the grammar file (grammar.txt) to get the original string and non-terminal symbols of the production
+*/
 public class GrammarInfo {
     private final Map<String, NonTerminal> nonTerminals = new HashMap<>();
     private final Map<String, Production> productions = new HashMap<>();
@@ -25,8 +22,8 @@ public class GrammarInfo {
         final var lines = FileUtils.readLines(FilePathConfig.GRAMMAR_PATH);
         for (int idx = 0; idx < lines.size(); idx++) {
             final var line = lines.get(idx);
-            // 形如 `A -> B ( id intConst ) C;` 的产生式
-            // 先删除分号, 按 -> 切, 再按空格切 body
+            // Production of the form `A -> B ( id intConst ) C;`
+            // First delete the semicolon, press -> to cut, then press the space to cut the body
             final var withoutComma = line.replace(";", "");
             final var words = withoutComma.split(" -> ");
             final var headString = words[0];
@@ -43,15 +40,13 @@ public class GrammarInfo {
                 }
             }
 
-            // idx + 1 是为了让 production 的标号与行号相同, 方便查看
+            // idx + 1 is to make the production number the same as the row number for easy viewing
             final var production = new Production(idx + 1, head, body);
             productionsInOrder.add(production);
             productions.put(withoutComma, production);
         }
     }
 
-    // 为了防止有人看不懂, 就不用枚举定义单例了
-    // 顺手写个懒加载
     private static GrammarInfo instance = null;
 
     private static GrammarInfo getInstance() {

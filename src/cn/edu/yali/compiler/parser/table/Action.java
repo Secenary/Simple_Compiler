@@ -3,36 +3,36 @@ package cn.edu.yali.compiler.parser.table;
 import java.util.Objects;
 
 /**
- * 代表 LR 分析表 action 表中的一个动作, 你不应该修改此文件
+ * Represents an action in the LR analysis table action table
  */
 public class Action {
     public enum ActionKind {Reduce, Shift, Accept, Error}
 
     /**
-     * @return 构造出的接受动作
+     * @return Constructed Accept Action
      */
     public static Action accept() {
         return acceptInstance;
     }
 
     /**
-     * @param status 移入后要加入状态栈的状态
-     * @return 构造出的移入动作
+     * @param status The state to be added to the state stack after moving in
+     * @return Constructed shift action
      */
     public static Action shift(Status status) {
         return new Action(ActionKind.Shift, null, status);
     }
 
     /**
-     * @param production 要规约的产生式
-     * @return 构造出的规约动作
+     * @param production Productions to be reduced
+     * @return Constructed reduce action
      */
     public static Action reduce(Production production) {
         return new Action(ActionKind.Reduce, production, null);
     }
 
     /**
-     * @return 构造出的错误动作
+     * @return Constructed wrong action
      */
     public static Action error() {
         return errorInstance;
@@ -43,8 +43,8 @@ public class Action {
     }
 
     /**
-     * @return 获得规约动作的产生式
-     * @throws RuntimeException 动作不是规约动作
+     * @return Get the production of the reduce action
+     * @throws RuntimeException Action is not a reduce action
      */
     public Production getProduction() {
         if (kind != ActionKind.Reduce) {
@@ -56,8 +56,8 @@ public class Action {
     }
 
     /**
-     * @return 获得移入动作的状态
-     * @throws RuntimeException 动作不是移入动作
+     * @return Get the status of the shift action
+     * @throws RuntimeException The action is not a shift action
      */
     public Status getStatus() {
         if (kind != ActionKind.Shift) {

@@ -5,13 +5,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * 表示一条产生式, 你不应该改动此文件
+ * represents a production rule
  * <br>
- * 产生式的等价性由其 index 唯一确定. 即, 两条产生式 equals 当且仅当它们 index 相等.
+ * The equivalence of a production rule is uniquely determined by its index. That is, two production rules are equal if and only if their indexes are equal.
  *
- * @param index 该产生式的索引, 为其在 grammar.txt 文件内的行号, 从 1 开始
- * @param head  该产生式的头
- * @param body  该产生式的体
+ * @param index The index of the production rule, which is its line number in the grammar.txt file, starting from 1
+ * @param head The head of the production rule
+ * @param body The body of the production rule
  */
 public record Production(int index, NonTerminal head, List<Term> body) {
     @Override

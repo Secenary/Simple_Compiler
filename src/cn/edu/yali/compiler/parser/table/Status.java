@@ -2,25 +2,24 @@ package cn.edu.yali.compiler.parser.table;
 
 import cn.edu.yali.compiler.lexer.Token;
 import cn.edu.yali.compiler.lexer.TokenKind;
-
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 表示 LR 分析表中的一个状态, 你不应该修改此文件
+ * Represents a state in the LR analysis table
  * <br>
- * 状态的等价性由其编号唯一决定. 即两状态 equals 当且仅当它们的 index 相同
+ * The equivalence of states is determined uniquely by their numbers. That is, two states are equal if and only if their indexes are the same
  *
- * @param index  状态在 LR 表中的索引/编号
- * @param action 在该状态下遇到终结符后应该转移到哪个状态
- * @param goto_  在该状态下规约到非终结符后应该转移到哪个状态
+ * @param index The index/number of the state in the LR table
+ * @param action Which state should be transferred to after encountering a terminal symbol in this state
+ * @param goto_ Which state should be transferred to after reducing to a non-terminal symbol in this state
  */
 public record Status(int index, Map<TokenKind, Action> action, Map<NonTerminal, Status> goto_) {
     /**
-     * 构造一个状态
+     * Construct a state
      *
-     * @param index 状态的索引/编号
-     * @return 构造出的状态
+     * @param index state index/number
+     * @return constructed state
      */
     public static Status create(int index) {
         if (index < 0) {
@@ -31,7 +30,7 @@ public record Status(int index, Map<TokenKind, Action> action, Map<NonTerminal, 
     }
 
     /**
-     * @return 获得代表错误的状态
+     * @return Gets the status representing the error
      */
     public static Status error() {
         return errorInstance;
@@ -58,39 +57,39 @@ public record Status(int index, Map<TokenKind, Action> action, Map<NonTerminal, 
     }
 
     /**
-     * 当遇到该终结符 (Token 类型) 时, 应该转移到哪个状态
+     * When encountering this terminal (Token type), which state should be transferred to
      *
-     * @param terminal 终结符 (Token 类型)
-     * @return 应该转移到的状态
+     * @param terminal terminal (Token type)
+     * @return The state to be transferred to
      */
     public Action getAction(TokenKind terminal) {
         return action.getOrDefault(terminal, Action.error());
     }
 
     /**
-     * 当遇到该词法单元时, 应该转移到哪个状态
+     * When encountering this lexical unit, which state should be transferred to
      *
-     * @param token 词法单元
-     * @return 应该转移到的状态
+     * @param token lexical unit
+     * @return the state to be transferred to
      */
     public Action getAction(Token token) {
         return getAction(token.getKind());
     }
 
     /**
-     * 当规约到该非终结符时, 应该转移到哪个状态
+     * When the specification reaches this non-terminal symbol, which state should be transferred to
      *
-     * @param nonTerminal 非终结符
-     * @return 应该转移到的状态
+     * @param nonTerminal non-terminal symbol
+     * @return the state to be transferred to
      */
     public Status getGoto(NonTerminal nonTerminal) {
         return goto_.getOrDefault(nonTerminal, Status.error());
     }
 
-    //==================== 以下为实现相关代码 ==============================//
+    //==================== The following is the implementation code ==============================//
 
     void setAction(TokenKind terminal, Action action) {
-        // 有可能 set 相同的 action, 这时候不能报错
+        // It is possible to set the same action, so no error will be reported.
         if (inAndNotEqual(this.action, terminal, action)) {
             throw new RuntimeException("Action conflict at %s on %d".formatted(terminal, index));
         }
@@ -99,7 +98,7 @@ public record Status(int index, Map<TokenKind, Action> action, Map<NonTerminal, 
     }
 
     void setGoto(NonTerminal nonTerminal, Status goto_) {
-        // 有可能 set 相同的 goto, 这时候不能报错
+        // It is possible to set the same goto, so no error will be reported.
         if (inAndNotEqual(this.goto_, nonTerminal, goto_)) {
             throw new RuntimeException("Goto conflict at %s on %d".formatted(nonTerminal, index));
         }

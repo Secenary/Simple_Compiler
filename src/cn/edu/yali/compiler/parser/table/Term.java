@@ -1,15 +1,15 @@
 package cn.edu.yali.compiler.parser.table;
 
 /**
- * 文法符号, 你不应该修改此文件
+ * Grammar symbols
  * <br>
- * 该类为所有文法符号 (终止符与非终止符) 的基类
+ * This class is the base class of all grammar symbols (terminal and non-terminal)
  */
 public abstract class Term {
     /**
-     * 获得该文法符号的名字 (就是出现在文法文件里的描述符)
+     * Get the name of the grammar symbol (that is, the descriptor that appears in the grammar file)
      *
-     * @return 名字
+     * @return name
      */
     public String getTermName() {
         return termName;

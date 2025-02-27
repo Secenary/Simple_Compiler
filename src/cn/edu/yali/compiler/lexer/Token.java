@@ -1,75 +1,73 @@
 package cn.edu.yali.compiler.lexer;
 
 /**
- * 词法单元的实现, 你不应该修改该文件
  * <br>
- * 词法单元 (Token) 是词法分析的结果. 词法分析从源程序文件的文本流中识别出结构, 将一个或多个合并起来表示特定含义的字符合并, 组成词法单元.
+ * Lexical unit (Token) is the result of lexical analysis. Lexical analysis identifies the structure from the text stream of the source program file, and combines one or more characters that are combined to represent a specific meaning to form a lexical unit.
  * <br>
- * 词法单元的结构非常简单, 其具有类型与可能的描述文本, 后者在一些复杂的词法单元如标识符,
- * 数字字面量中表示该词法单元的内容, 其又称为词素 (lexeme)
+ * The structure of a lexical unit is very simple. It has a type and possible description text. The latter is in some complex lexical units such as identifiers.
+ * The content of the lexical unit is represented in a numeric literal, which is also called a lexeme.
  * <br>
- * 为了方便与统一词法单元的构造, 我们将词法单元的构造函数设为了私有的, 通过公有静态函数进行构造,
- * 这将提升代码可读性并便于我们在构造时执行一定的检查
- *
- * @see TokenKind 词法单元的类型, 其具有一定的复杂结构
+ * In order to facilitate and unify the construction of lexical units, we set the constructor of the lexical unit to private, and construct it through a public static function.
+ * This will improve the readability of the code and facilitate us to perform certain checks during construction.
+ * @see TokenKind The type of lexical unit, which has a certain complex structure
  */
 public class Token {
     /**
-     * @return 代表 EOF 的 token
+     * @return Token representing EOF
      */
     public static Token eof() {
         return new Token(TokenKind.eof(), "");
     }
 
     /**
-     * @param tokenKindId token 类型的字符串表示
-     * @return 具有该 token 类型的一简单 token (不带其它文本表示, 比如标点/关键字)
+     * @param tokenKindId string representation of the token type
+     * @return a simple token of this token type (without other text representation, such as punctuation/keywords)
      */
     public static Token simple(String tokenKindId) {
         return simple(TokenKind.fromString(tokenKindId));
     }
 
     /**
-     * @param kind token 类型
-     * @return 具有该 token 类型的一简单 token (不带其它文本表示, 比如标点/关键字)
+     * @param kind token type
+     * @return a simple token of this token type (without other text representation, such as punctuation/keywords)
      */
     public static Token simple(TokenKind kind) {
         return normal(kind, "");
     }
 
     /**
-     * @param tokenKindId token 类型的字符串表示
-     * @return 具有该 token 类型的一正常 token (带其它文本表示, 比如标识符/数字文本)
+     * @param tokenKindId string representation of the token type
+     * @return a normal token with this token type (with other text representations, such as identifiers/numeric text)
      */
     public static Token normal(String tokenKindId, String text) {
         return normal(TokenKind.fromString(tokenKindId), text);
     }
 
     /**
-     * @param kind token 类型
-     * @param text 源文本
-     * @return 具有该 token 类型的一正常 token (带其它文本, 比如标识符/数字文本)
+     * @param kind token type
+     * @param text source text
+     * @return a normal token with this token type (with other text, such as identifier/numeric text)
      */
     public static Token normal(TokenKind kind, String text) {
         return new Token(kind, text);
     }
 
     /**
-     * @return 该 token 的类型的文本表示
+     * @return The text representation of the token type
      */
     public String getKindId() {
         return kind.getIdentifier();
     }
 
     /**
-     * @return 该 token 的类型
+     * @return The type of the token
      */
     public TokenKind getKind() {
         return kind;
     }
 
     /**
-     * @return 该 token 的文本, 有可能为空字符串 (但恒不为 null)
+     * @return The text of the token, which may be an empty string (but never null)
      */
     public String getText() {
         return text;

@@ -13,12 +13,12 @@ import java.util.stream.StreamSupport;
 import static cn.edu.yali.compiler.lexer.Token.*;
 
 /**
- * TODO: 实验一: 实现词法分析
+ * Experiment 1: Implement lexical analysis
  * <br>
- * 你可能需要参考的框架代码如下:
+ * The framework code you may need to refer to is as follows:
  *
- * @see Token 词法单元的实现
- * @see TokenKind 词法单元类型的实现
+ * @see Token lexical unit implementation
+ * @see TokenKind lexical unit type implementation
  */
 public class LexicalAnalyzer {
     private final SymbolTable symbolTable;
@@ -44,14 +44,14 @@ public class LexicalAnalyzer {
 
 
     /**
-     * 从给予的路径中读取并加载文件内容
+     * Read and load the file contents from the given path
      *
-     * @param path 路径
+     * @param path the given path
      */
     public void loadFile(String path) {
-        // TODO: 词法分析前的缓冲区实现
-        // 可自由实现各类缓冲区
-        // 或直接采用完整读入方法
+        // Implementation of buffer before lexical analysis
+        // You can freely implement various buffers
+        // Or directly use the complete reading method
         try {
             byte[] bytes = Files.readAllBytes(Paths.get(path));
             content = new String(bytes);
@@ -61,11 +61,11 @@ public class LexicalAnalyzer {
     }
 
     /**
-     * 执行词法分析, 准备好用于返回的 token 列表 <br>
-     * 需要维护实验一所需的符号表条目, 而得在语法分析中才能确定的符号表条目的成员可以先设置为 null
+     * Perform lexical analysis and prepare a token list for return <br>
+     * The symbol table entries required for experiment 1 need to be maintained, and the members of the symbol table entries that can only be determined in syntax analysis can be set to null first
      */
     public void run() {
-        // TODO: 自动机实现的词法分析过程
+        // Lexical analysis process implemented by automaton
         this.currentState = State.start;
         for(int i = 0; i < content.length(); i++) {
             char c = content.charAt(i);
@@ -194,15 +194,15 @@ public class LexicalAnalyzer {
     }
 
     /**
-     * 获得词法分析的结果, 保证在调用了 run 方法之后调用
+     * Get the result of lexical analysis, and make sure to call it after calling the run method
      *
-     * @return Token 列表
+     * @return Token List
      */
     public Iterable<Token> getTokens() {
-        // TODO: 从词法分析过程中获取 Token 列表
-        // 词法分析过程可以使用 Stream 或 Iterator 实现按需分析
-        // 亦可以直接分析完整个文件
-        // 总之实现过程能转化为一列表即可
+        // Get the token list from the lexical analysis process
+        // The lexical analysis process can use Stream or Iterator to implement on-demand analysis
+        // You can also directly analyze the entire file
+        // In short, the implementation process can be converted into a list
         return tokens;
     }
 

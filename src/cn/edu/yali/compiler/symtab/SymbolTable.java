@@ -8,32 +8,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 符号表
+ * Symbol table
  * <br>
- * 由于源语言比较简易, 加之 Java 中具有非常好用的通用数据结构类型, 本项目其实并不一定需要一个集中的 "符号表" 来存储源语言中的
- * <b>所有符号的所有信息</b>. 但为了切合理论课程教学, 提高实验实践技能的通用性, 我们按照一般编译器项目中符号表的设计设计了该符号表.
- * 其在代码中的作用可能并不明显, 但我们希望同学们可以借此体验符号表的设计思想.
+ * Because the source language is relatively simple, and Java has very useful general data structure types, this project does not necessarily need a centralized "symbol table" to store all the information of all symbols in the source language. However, in order to meet the theoretical course teaching and improve the universality of experimental practice skills, we designed this symbol table according to the design of the symbol table in the general compiler project.
+ * Its role in the code may not be obvious, but we hope that students can experience the design concept of the symbol table through this.
  */
 public class SymbolTable {
 
     public Map<String, SymbolTableEntry> table = new HashMap<>();
     /**
-     * 获取符号表中已有的条目
+     * Get an existing entry in the symbol table
      *
-     * @param text 符号的文本表示
-     * @return 该符号在符号表中的条目
-     * @throws RuntimeException 该符号在表中不存在
+     * @param text The text representation of the symbol
+     * @return The entry for the symbol in the symbol table
+     * @throws RuntimeException The symbol does not exist in the table
      */
     public SymbolTableEntry get(String text) {
         if(has(text)) return table.get(text);
         else throw new RuntimeException();
     }
     /**
-     * 在符号表中新增条目
+     * Add a new entry to the symbol table
      *
-     * @param text 待加入符号表中的新符号的文本表示
-     * @return 该符号在符号表中对应的新条目
-     * @throws RuntimeException 该符号已在表中存在
+     * @param text The text representation of the new symbol to be added to the symbol table
+     * @return The new entry corresponding to the symbol in the symbol table
+     * @throws RuntimeException The symbol already exists in the table
      */
     public SymbolTableEntry add(String text) {
         if (has(text)) {
@@ -46,28 +45,28 @@ public class SymbolTable {
     }
 
     /**
-     * 判断符号表中有无条目
+     * Check if there is an entry in the symbol table
      *
-     * @param text 待判断符号的文本表示
-     * @return 该符号的条目是否位于符号表中
+     * @param text The text representation of the symbol to be checked
+     * @return Whether the entry of the symbol is in the symbol table
      */
     public boolean has(String text) {
         return table.containsKey(text);
     }
 
     /**
-     * 获得符号表的所有条目以供 {@code dumpTable} 使用
+     * Get all entries in the symbol table for use with {@code dumpTable}
      *
-     * @return 符号表的所有条目
+     * @return all entries in the symbol table
      */
     private Map<String, SymbolTableEntry> getAllEntries() {
         return table;
     }
 
     /**
-     * 将符号表按格式输出
+     * Output the symbol table in format
      *
-     * @param path 输出文件路径
+     * @param path Output file path
      */
     public void dumpTable(String path) {
         final var entriesInOrder = new ArrayList<>(getAllEntries().values());

@@ -1,11 +1,11 @@
 package cn.edu.yali.compiler.symtab;
 
 /**
- * 符号表条目
+ * Symbol table entries
  */
 public class SymbolTableEntry {
     /**
-     * @param text 符号的文本表示. 对于标识符符号, 该参数应该为标识符文本.
+     * @param text The textual representation of the symbol. For identifier symbols, this parameter should be the identifier text.
      */
     public SymbolTableEntry(String text) {
         this.text = text;
@@ -13,24 +13,24 @@ public class SymbolTableEntry {
     }
 
     /**
-     * @return 符号的文本表示
+     * @return Textual representation of symbols
      */
     public String getText() {
         return text;
     }
 
     /**
-     * @return 该标识符符号可以绑定到的源语言对象的类型
+     * @return The type of source language object to which this identifier symbol can be bound
      */
     public SourceCodeType getType() {
         return type;
     }
 
     /**
-     * 由于这个类型严格来说只能在语法分析后才能获得, 所以为了在词法分析时就构造出符号表,
-     * 我们只能暴露出该接口用以修改该成员. 该成员应该且只应该被修改一次.
+     * Since this type can only be obtained after syntax analysis, in order to construct the symbol table during lexical analysis,
+     * We can only expose the interface to modify the member. This member should and should only be modified once.
      *
-     * @param type 该标识符符号可以绑定到的源语言对象的类型
+     * @param type The type of the source language object to which this identifier symbol can be bound
      */
     public void setType(SourceCodeType type) {
         if (this.type != null) {

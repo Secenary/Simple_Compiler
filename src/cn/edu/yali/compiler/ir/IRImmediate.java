@@ -1,7 +1,7 @@
 package cn.edu.yali.compiler.ir;
 
 /**
- * IR 中的立即数
+ * Immediate Values ​​in IR
  */
 public class IRImmediate implements IRValue {
     public static IRImmediate of(int value) {

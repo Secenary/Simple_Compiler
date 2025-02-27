@@ -3,21 +3,18 @@ package cn.edu.yali.compiler.parser;
 import cn.edu.yali.compiler.lexer.Token;
 import cn.edu.yali.compiler.parser.table.*;
 import cn.edu.yali.compiler.symtab.SymbolTable;
-
 import java.util.*;
 
-import static cn.edu.yali.compiler.lexer.Token.simple;
-
-//TODO: 实验二: 实现 LR 语法分析驱动程序
+//Experiment 2: Implementing LR parsing driver
 
 /**
- * LR 语法分析驱动程序
+ * LR grammar analysis driver
  * <br>
- * 该程序接受词法单元串与 LR 分析表 (action 和 goto 表), 按表对词法单元流进行分析, 执行对应动作, 并在执行动作时通知各注册的观察者.
+ * This program accepts lexical unit strings and LR analysis tables (action and goto tables), analyzes the lexical unit stream according to the table, executes the corresponding actions, and notifies each registered observer when executing the action.
  * <br>
- * 你应当按照被挖空的方法的文档实现对应方法, 你可以随意为该类添加你需要的私有成员对象, 但不应该再为此类添加公有接口, 也不应该改动未被挖空的方法,
- * 除非你已经同助教充分沟通, 并能证明你的修改的合理性, 且令助教确定可能被改动的评测方法. 随意修改该类的其它部分有可能导致自动评测出错而被扣分.
- */
+ * You should implement the corresponding method according to the documentation of the hollowed-out method. You can add private member objects you need to the class at will, but you should not add public interfaces to this class, nor should you modify the methods that are not hollowed out.
+ * Unless you have fully communicated with the teaching assistant and can prove the rationality of your modification, and let the teaching assistant determine the evaluation method that may be modified. Modifying other parts of the class at will may cause automatic evaluation errors and deductions.
+*/
 public class SyntaxAnalyzer {
     private final SymbolTable symbolTable;
     private final List<ActionObserver> observers = new ArrayList<>();
@@ -31,9 +28,9 @@ public class SyntaxAnalyzer {
     }
 
     /**
-     * 注册新的观察者
+     * Registering a new observer
      *
-     * @param observer 观察者
+     * @param observer Observer
      */
     public void registerObserver(ActionObserver observer) {
         observers.add(observer);
@@ -41,10 +38,10 @@ public class SyntaxAnalyzer {
     }
 
     /**
-     * 在执行 shift 动作时通知各个观察者
+     * Notify observers when a shift action is performed
      *
-     * @param currentStatus 当前状态
-     * @param currentToken  当前词法单元
+     * @param currentStatus currentStatus
+     * @param currentToken  currentToken
      */
     public void callWhenInShift(Status currentStatus, Token currentToken) {
         for (final var listener : observers) {
@@ -53,10 +50,10 @@ public class SyntaxAnalyzer {
     }
 
     /**
-     * 在执行 reduce 动作时通知各个观察者
+     * Notify observers when a reduce action is performed
      *
-     * @param currentStatus 当前状态
-     * @param production    待规约的产生式
+     * @param currentStatus currentStatus
+     * @param production    production
      */
     public void callWhenInReduce(Status currentStatus, Production production) {
         for (final var listener : observers) {
@@ -65,9 +62,9 @@ public class SyntaxAnalyzer {
     }
 
     /**
-     * 在执行 accept 动作时通知各个观察者
+     * Notify observers when an accept action is performed
      *
-     * @param currentStatus 当前状态
+     * @param currentStatus currentStatus
      */
     public void callWhenInAccept(Status currentStatus) {
         for (final var listener : observers) {
@@ -76,26 +73,26 @@ public class SyntaxAnalyzer {
     }
 
     public void loadTokens(Iterable<Token> tokens) {
-        // TODO: 加载词法单元
-        // 你可以自行选择要如何存储词法单元, 譬如使用迭代器, 或是栈, 或是干脆使用一个 list 全存起来
-        // 需要注意的是, 在实现驱动程序的过程中, 你会需要面对只读取一个 token 而不能消耗它的情况,
-        // 在自行设计的时候请加以考虑此种情况
+        // Load tokens
+        // You can choose how to store tokens, such as using iterators, stacks, or simply using a list to store them all
+        // Note that when implementing the driver, you will need to face the situation where you can only read a token but not consume it.
+        // Please consider this situation when designing your own
         for(var token: tokens)
             lr1_tokens.add(token);
     }
 
     public void loadLRTable(LRTable table) {
-        // TODO: 加载 LR 分析表
-        // 你可以自行选择要如何使用该表格:
-        // 是直接对 LRTable 调用 getAction/getGoto, 抑或是直接将 initStatus 存起来使用
+        // Load LR analysis table
+        // You can choose how to use the table:
+        // Call getAction/getGoto directly on LRTable, or save initStatus directly for use
         lr1_table = table;
     }
 
     public void run() {
-        // TODO: 实现驱动程序
-        // 你需要根据上面的输入来实现 LR 语法分析的驱动程序
-        // 请分别在遇到 Shift, Reduce, Accept 的时候调用上面的 callWhenInShift, callWhenInReduce, callWhenInAccept
-        // 否则用于为实验二打分的产生式输出可能不会正常工作
+        // Implement the driver program
+        // You need to implement the driver program for LR parsing based on the above input
+        // Please call the above callWhenInShift, callWhenInReduce, callWhenInAccept when encountering Shift, Reduce, Accept respectively
+        // Otherwise, the production output used for scoring experiment 2 may not work properly
         int cnt = 0;
         Status curStatus = lr1_table.getInit();
         status_stack.push(curStatus);

@@ -1,7 +1,7 @@
 package cn.edu.yali.compiler;
 
 /**
- * 当一个函数需要你实现, 而你没有实现它的时候, 便会抛出此异常
+ * This exception is thrown when a function requires you to implement it and you have not implemented it.
  */
 public class NotImplementedException extends RuntimeException {
 }

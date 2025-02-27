@@ -13,16 +13,15 @@ import cn.edu.yali.compiler.symtab.SymbolTable;
 import cn.edu.yali.compiler.utils.FilePathConfig;
 import cn.edu.yali.compiler.utils.FileUtils;
 import cn.edu.yali.compiler.utils.IREmulator;
-
 import java.util.Objects;
 
 public class Main {
     public static void main(String[] args) {
-        // 构建符号表以供各部分使用
+        // Build a symbol table for use by all components/modules
         TokenKind.loadTokenKinds();
         final var symbolTable = new SymbolTable();
 
-        // 词法分析
+        // Lexical Analysis
         final var lexer = new LexicalAnalyzer(symbolTable);
         lexer.loadFile(FilePathConfig.SRC_CODE_PATH);
         lexer.run();
@@ -30,47 +29,47 @@ public class Main {
         final var tokens = lexer.getTokens();
         symbolTable.dumpTable(FilePathConfig.OLD_SYMBOL_TABLE);
 
-        // 读取第三方程序构造的 LR 分析表
+        // Read LR analysis tables constructed by third-party programs
         final var tableLoader = new TableLoader();
         final var lrTable = tableLoader.load(FilePathConfig.LR1_TABLE_PATH);
 
-        // // 或使用框架自带部分直接从 grammar.txt 构造 LR 分析表
+        // // Or use the framework to construct the LR analysis table directly from grammar.txt
         // final var tableGenerator = new TableGenerator();
         // tableGenerator.run();
         // final var lrTable = tableGenerator.getTable();
         // lrTable.dumpTable("data/out/lrTable.csv");
 
-        // 加载 LR 分析驱动程序
+        // Loading the LR Analysis Driver
         final var parser = new SyntaxAnalyzer(symbolTable);
         parser.loadTokens(tokens);
         parser.loadLRTable(lrTable);
 
-        // 加入生成规约列表的 Observer
+        // Add an Observer to the list of generated specifications
         final var productionCollector = new ProductionCollector(GrammarInfo.getBeginProduction());
         parser.registerObserver(productionCollector);
 
-        // 加入用作语义检查的 Observer
+        // Add Observer for semantic checking 
         final var semanticAnalyzer = new SemanticAnalyzer();
         parser.registerObserver(semanticAnalyzer);
 
-        // 加入用作 IR 生成的 Observer
+        // Add Observer for IR generation
         final var irGenerator = new IRGenerator();
         parser.registerObserver(irGenerator);
 
-        // 执行语法解析并在解析过程中依次调用各 Observer
+        // Perform syntax parsing and call each Observer in turn during the parsing process
         parser.run();
 
-        // 各 Observer 输出结果
+        // Output results of each Observer
         productionCollector.dumpToFile(FilePathConfig.PARSER_PATH);
         symbolTable.dumpTable(FilePathConfig.NEW_SYMBOL_TABLE);
         final var instructions = irGenerator.getIR();
         irGenerator.dumpIR(FilePathConfig.INTERMEDIATE_CODE_PATH);
 
-        // 模拟执行 IR 并输出结果
+        // Simulate the execution of the IR and output the results
         final var emulator = IREmulator.load(instructions);
         FileUtils.writeFile(FilePathConfig.EMULATE_RESULT, emulator.execute().map(Objects::toString).orElse("No return value"));
 
-        // 由 IR 生成汇编
+        // Generating assembly from IR
         final var asmGenerator = new AssemblyGenerator();
         asmGenerator.loadIR(instructions);
         asmGenerator.run();

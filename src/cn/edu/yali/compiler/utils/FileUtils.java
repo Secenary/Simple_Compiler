@@ -9,24 +9,24 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 用于方便地做文件读写的工具
+ * Tools for convenient file reading and writing
  */
 public final class FileUtils {
     /**
-     * 读取文本文件并以String形式返回文件内容
+     * Reads a text file and returns the file content as a String
      *
-     * @param path 文本文件路径
-     * @return 文本内容
+     * @param path Text file path
+     * @return Text content
      */
     public static String readFile(String path) {
         return String.join("\n", readLines(path));
     }
 
     /**
-     * 读取文本文件并按行以 {@code ArrayList<String>} 形式返回文件内容
+     * Read a text file and return the file content in the form of {@code ArrayList<String>} by line
      *
-     * @param path 文本文件路径
-     * @return 文本内容
+     * @param path Text file path
+     * @return Text content
      */
     public static List<String> readLines(String path) {
         try (final var lines = Files.lines(Paths.get(path))) {
@@ -37,10 +37,10 @@ public final class FileUtils {
     }
 
     /**
-     * 将内容写入指定文件
+     * Write the contents to the specified file
      *
-     * @param path    要写入的文件路径
-     * @param content 要写入的内容
+     * @param path    The path of the file to write
+     * @param content What to write
      */
     public static void writeFile(String path, String content) {
         writeLines(path, List.of(content));
@@ -55,9 +55,9 @@ public final class FileUtils {
     }
 
     /**
-     * 创建空文件
+     * Create an empty file
      *
-     * @param path 文件路径
+     * @param path File Path
      */
     public static void tryCreateEmptyFile(String path) {
         try {
@@ -71,9 +71,9 @@ public final class FileUtils {
 
     public static List<List<String>> readCSV(String path) {
         return readLines(path).stream()
-            // 当 limit 是 0 (调用无 limit 参数版本的 split 时就是这种情况) 时
-            // split 会忽略尾部的空白字符串, 而当 limit=-1 时不会忽略
-            // 这对 csv 是关键的, 因为 csv 里每行经常会有空白的末尾单元格
+            // When limit is 0 (which is the case when calling split without a limit parameter)
+            // split will ignore trailing blanks, but limit=-1 will not.
+            // This is critical for csv, because csv often has blank trailing cells in each row
             .map(line -> line.split(",", -1))
             .map(Arrays::asList)
             .toList();

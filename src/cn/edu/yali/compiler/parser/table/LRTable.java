@@ -3,21 +3,20 @@ package cn.edu.yali.compiler.parser.table;
 import cn.edu.yali.compiler.lexer.Token;
 import cn.edu.yali.compiler.lexer.TokenKind;
 import cn.edu.yali.compiler.utils.FileUtils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 表示 LR 文法分析表, 你不应该修改此文件
+ * Represents LR grammar analysis table
  * <br>
  */
 public class LRTable {
     /**
-     * 根据当前状态与当前词法单元获取对应动作
+     * Get the corresponding action based on the current state and the current lexical unit
      *
-     * @param status 当前状态
-     * @param token  当前词法单元
-     * @return 应采取的动作
+     * @param status Current Status
+     * @param token  Current token
+     * @return Actions to be taken
      */
     public Action getAction(Status status, Token token) {
         final var tokenKind = token.getKind();
@@ -25,18 +24,18 @@ public class LRTable {
     }
 
     /**
-     * 根据当前状态与规约到非终结符获得应转移到的状态
+     * Get the state to be transferred to according to the current state and the convention to the non-terminal symbol
      *
-     * @param status      当前状态
-     * @param nonTerminal 规约出的非终结符
-     * @return 应转移到的状态
+     * @param status      Current Status
+     * @param nonTerminal Non-terminal symbol
+     * @return The state to be transferred to
      */
     public Status getGoto(Status status, NonTerminal nonTerminal) {
         return status.getGoto(nonTerminal);
     }
 
     /**
-     * @return 起始状态
+     * @return Starting State
      */
     public Status getInit() {
         return statusInIndexOrder.get(0);
@@ -46,7 +45,7 @@ public class LRTable {
         final var text = new StringBuilder();
         // table head
         text.append("Status,ACTION").append(",".repeat(terminals.size()))
-            // GOTO 占了第一个 nonTerminal 的位置, 所以要 -1
+            // GOTO occupies the first nonTerminal position, so subtract 1
             .append("GOTO").append(",".repeat(nonTerminals.size() - 1))
             .append("\n");
 

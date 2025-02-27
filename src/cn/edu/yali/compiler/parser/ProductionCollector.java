@@ -5,15 +5,14 @@ import cn.edu.yali.compiler.parser.table.Production;
 import cn.edu.yali.compiler.parser.table.Status;
 import cn.edu.yali.compiler.symtab.SymbolTable;
 import cn.edu.yali.compiler.utils.FileUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 规约出的产生式的收集器, 你不应该改动此文件
+ * Collector of reduced productions
  * <br>
- * 该类将自己注册为 LR 驱动程序的动作观察者, 在每次 reduce 将规约的产生式存起来, 待到语法分析结束之后便能按规约顺序输出所有规约到产生式.
- * 该类的输出结果会被作为判断实验二代码正误的根据.
+ * This class registers itself as the action observer of the LR driver, saves the reduced productions in each reduce, and outputs all the reduced productions in the order of the reduction after the syntax analysis is completed.
+ * The output of this class will be used as the basis for judging the correctness of the code in Experiment 2.
  */
 public class ProductionCollector implements ActionObserver {
     public ProductionCollector(Production beginProduction) {
@@ -24,9 +23,9 @@ public class ProductionCollector implements ActionObserver {
     private final List<Production> reducedProductions = new ArrayList<>();
 
     /**
-     * 将结果输出到文件
+     * Dump the results to a file
      *
-     * @param path 文件路径
+     * @param path File Path
      */
     public void dumpToFile(String path) {
         FileUtils.writeLines(path, reducedProductions.stream().map(Production::toString).toList());
@@ -34,7 +33,7 @@ public class ProductionCollector implements ActionObserver {
 
     @Override
     public void whenReduce(Status currentStatus, Production production) {
-        // 当规约时, 记录规约到的产生式
+        // When reducing, record the reduced productions
         reducedProductions.add(production);
     }
 
@@ -45,7 +44,7 @@ public class ProductionCollector implements ActionObserver {
 
     @Override
     public void whenAccept(Status currentStatus) {
-        // 当接受时, 记录下对起始产生式的规约
+        // When accepted, record the specification of the starting production
         reducedProductions.add(beginProduction);
     }
 
